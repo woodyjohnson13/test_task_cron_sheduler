@@ -1,0 +1,9 @@
+.minutes_selector {
+    width: 40px;
+}
+
+.timer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}

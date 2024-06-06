@@ -1,0 +1,10 @@
+.month_and_timer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.month_input {
+    width: 200px;
+}

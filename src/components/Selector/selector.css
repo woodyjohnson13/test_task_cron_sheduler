@@ -1,0 +1,11 @@
+.selector {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+input:hover {
+    cursor: pointer;
+}
+
+

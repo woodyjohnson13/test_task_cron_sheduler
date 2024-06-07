@@ -5,6 +5,50 @@
   height: 100vh;
 }
 
+
+@media (min-width: 601px) {
+  .selector_and_shedules {
+    display: flex;
+    border: 1px solid black;
+    padding: 10px;
+    height: 250px;
+    border-radius: 10px;
+  }
+
+  .input_div {
+    margin-left: 50px;
+    width: 300px;
+  }
+}
+
+label:hover {
+  cursor: pointer;
+}
+
+
+@media (max-width: 600px) {
+
+  .selector_and_shedules {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+    padding: 10px;
+    height: auto; 
+    border-radius: 10px;
+    width: 280px;
+  }
+
+  .input_div {
+    margin-top: 8px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+
+}
+
+
 input {
   border: 2px solid ;
   border-radius: 0.75em;
@@ -12,8 +56,7 @@ input {
 }
 
 select {
-  background-color: #f9c4d2;
-  border: 2px solid #b18597;
+  border: 2px solid ;
   border-radius: 0.75em;
   padding-left: 2px;
 }
@@ -40,44 +83,9 @@ input[type="number"], input[type="time"], input[type="text"], select {
   align-items: center;
 }
 
-@media (min-width: 601px) {
-  .selector_and_shedules {
-    display: flex;
-    border: 1px solid black;
-    padding: 10px;
-    height: 180px;
-    border-radius: 10px;
-  }
-
-  .input_div {
-    margin-left: 50px;
-    width: 300px;
-  }
-}
 
 
-@media (max-width: 600px) {
-  .selector_and_shedules {
-    display: flex;
-    flex-direction: column;
-    border: 1px solid black;
-    padding: 10px;
-    height: auto; 
-    border-radius: 10px;
-    width: 280px;
-  }
 
-  .input_div {
-    margin-top: 8px;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-  }
-
-  input {
-    margin-left: 0px;
-  }
-}
 
 
 

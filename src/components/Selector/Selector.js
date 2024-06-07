@@ -7,7 +7,8 @@ function Selector({ scheduleType, setScheduleType }) {
       <label>
         <input 
           type="radio" 
-          value="weekly" 
+          value="weekly"
+          id="week" 
           checked={scheduleType === 'weekly'} 
           onChange={() => setScheduleType('weekly')} 
         />

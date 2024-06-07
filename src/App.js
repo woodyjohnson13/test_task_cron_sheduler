@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import './App.css';
 import Selector from './components/Selector/Selector';
 import Weeks from './components/Weeks/Weeks';
-import Days from './components/Days';
+import Days from './components/Days/Days';
 import Minutes from './components/Minutes/Minutes';
 import Months from './components/Months/Months';
-import Custom from './components/Custom';
+import Custom from './components/Custom/Custom';
 import Display from './components/Display/Display';
 
 function App() {
@@ -18,7 +18,7 @@ function App() {
 
   return (
     <div className="App">
-      <h1>CRON помошник</h1>
+      <h1>CRON помощник</h1>
       <div className='selector_and_shedules'>
           <Selector scheduleType={scheduleType} setScheduleType={setScheduleType} />
           <div className='input_div'>

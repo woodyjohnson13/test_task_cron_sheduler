@@ -14,6 +14,12 @@ function Days() {
     }
   }, [cronExpression]);
 
+  useEffect(() => {
+      setTime(`12:00`);
+      updateCronExpression('0 00 12 * * *')
+    
+  }, []);
+
 
 
   const handleTimeChange = (e) => {

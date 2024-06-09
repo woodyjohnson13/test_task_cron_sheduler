@@ -18,6 +18,13 @@ function Months() {
   }, [cronExpression]);
 
 
+  useEffect(() => {
+      setDay(1);
+      setTime('12:00');
+      updateCronExpression('0 00 12 1 * *')
+  }, []);
+
+
   const handleDayChange = (e) => {
     const value = e.target.value;
     setDay(value);

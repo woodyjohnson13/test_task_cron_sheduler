@@ -15,6 +15,14 @@ function Minutes() {
   }, [cronExpression]);
 
 
+  useEffect(() => {
+      setMinutes(1);
+      updateCronExpression('*/1 * * * *')
+  }, []);
+
+
+
+
   const handleMinutesChange = (e) => {
     const value = e.target.value;
     setMinutes(value);

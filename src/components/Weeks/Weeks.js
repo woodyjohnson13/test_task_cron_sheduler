@@ -19,6 +19,14 @@ function Weeks() {
       }
     }
   }, [cronExpression,updateCronExpression]);
+
+
+  useEffect(() => {
+        setTime('12:00');
+        setSelectedDays(['MON']);
+        updateCronExpression('0 00 12 * * MON')
+  }, []);
+
   
   
   const handleDayChange = (e) => {
@@ -27,7 +35,11 @@ function Weeks() {
     if (selectedDays.includes(value)) {
       newSelectedDays = selectedDays.filter(day => day !== value);
     } else {
-      newSelectedDays = [...selectedDays, value];
+      if (selectedDays[0]=="") {
+        newSelectedDays = [value];
+      } else {
+        newSelectedDays = [...selectedDays, value];
+      }
     }
     setSelectedDays(newSelectedDays);
     updateCronExpression(`0 ${time.split(':')[1]} ${time.split(':')[0]} * * ${newSelectedDays.join(',')}`);

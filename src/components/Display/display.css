@@ -127,3 +127,7 @@ a:hover {
     color:black
 }
 
+#expression_field {
+    outline: none;
+  }
+  

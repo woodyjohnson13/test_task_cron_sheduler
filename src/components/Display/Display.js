@@ -2,34 +2,14 @@ import React from 'react';
 import './display.css'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
-
-
-function isValidCronExpression(cronExpression) {
-
-  const regexArray = [
-    /^(\d{1,2}|\*) (\d{1,2}|\*) (\d{1,2}|\*) (\*|\d{1,2}|\d{1,2}-\d{1,2}) (\*|\d{1,2}|\d{1,2}-\d{1,2}) (MON|TUE|WED|THU|FRI|SAT|SUN)(,(MON|TUE|WED|THU|FRI|SAT|SUN))*$/,
-    /^\d{1,2} \d{1,2} \d{1,2} \* \* \*$/,
-    /^\*\/\d{1,2} \* \* \* \*$/,
-    /^(\d{1,2}|\*) (\d{1,2}|\*) \d{1,2} \d{1,2} \* \*$/
-  ];
-
-  for (let regex of regexArray) {
-    if (regex.test(cronExpression)) {
-      return true; 
-    }
-  }
-
-  return false; 
-}
-
+import { CronParser } from '../../utilities/CronParser'; 
 
 
 
 function Display({ cronExpression }) {
 
   const handleSaveButtonClick = () => {
-    if (isValidCronExpression(cronExpression)) {
+    if (CronParser.isValidCronExpression(cronExpression)) {
       toast.success( 'Валидация CRON строки прошла успешно. Сохраняем...', {
         position: "top-right",
         autoClose: 5000,
@@ -84,19 +64,21 @@ function Display({ cronExpression }) {
 
   }
   
-  
-  
-
-
   return (
     <div className='main_display'>
       <div className='button_box'>
         <button className='two_buttons' onClick={handleSaveButtonClick}>Сохранить</button>
         <button className='two_buttons' onClick={handleDownload}>Загрузить</button>
       </div>
+
       <div className='expression'>
-        <p>{cronExpression}</p>
+        <p id='expression_field' contentEditable="true">{cronExpression}</p>
       </div>
+
+      <div className='expression'>
+        <p>{CronParser.cronExpressionToHumanReadable(cronExpression)}</p>
+      </div> 
+
       <button className='two_buttons' id='copy_button' onClick={handleCopyButtonClick}> Копировать строку</button>
       <p id='check_link'>Проверить полученную строку можно по <a href="https://crontab.cronhub.io/">ссылке</a>.</p>
       <ToastContainer/>

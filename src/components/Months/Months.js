@@ -1,6 +1,7 @@
 import React, { useState,useContext,useEffect } from 'react';
 import CronContext from '../../context/CronExpressionContext';
 import './month.css'
+import { CronParser } from '../../utilities/CronParser';
 
 
 function Months() {
@@ -19,9 +20,20 @@ function Months() {
 
 
   useEffect(() => {
-      setDay(1);
-      setTime('12:00');
-      updateCronExpression('0 00 12 1 * *')
+      if (cronExpression) {
+        if(CronParser.regexArray[3].test(cronExpression)) {
+          const parts = cronExpression.split(' ');
+          if (parts.length > 3) {
+            setDay(parts[3]);
+            setTime(`${parts[2].padStart(2, '0')}:${parts[1].padStart(2, '0')}`);
+          } }
+      
+         else {
+          setDay(1)
+          setTime('12:00')
+          updateCronExpression('0 00 12 1 * *')
+      }
+    }  
   }, []);
 
 

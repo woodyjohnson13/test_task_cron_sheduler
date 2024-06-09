@@ -1,6 +1,7 @@
 import React, { useState,useContext,useEffect } from 'react';
 import CronContext from '../../context/CronExpressionContext';
 import './minutes.css'
+import { CronParser } from '../../utilities/CronParser';
 
 function Minutes() {
   const [minutes, setMinutes] = useState(15);
@@ -16,8 +17,18 @@ function Minutes() {
 
 
   useEffect(() => {
-      setMinutes(1);
-      updateCronExpression('*/1 * * * *')
+    if (cronExpression) {
+      if (CronParser.regexArray[2].test(cronExpression)) {
+        const parts = cronExpression.split(' ');
+        if (parts.length > 1) {
+          const minute = parseInt(parts[0].split('/')[1]);
+          setMinutes(minute);
+        }
+      } else {
+        setMinutes(1);
+        updateCronExpression('*/1 * * * *')  
+      }
+    } 
   }, []);
 
 

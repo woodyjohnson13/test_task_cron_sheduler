@@ -1,6 +1,7 @@
 import React, { useState, useEffect,useContext } from 'react';
 import CronContext from '../../context/CronExpressionContext';
 import './weeks.css';
+import { CronParser } from '../../utilities/CronParser';
 
 function Weeks() {
   const [selectedDays, setSelectedDays] = useState(['MON']);
@@ -22,9 +23,22 @@ function Weeks() {
 
 
   useEffect(() => {
+    if (cronExpression) { 
+      if (CronParser.regexArray[0].test(cronExpression)) {
+          const parts = cronExpression.split(' ');
+          if (parts.length >= 6) {
+            const cronTime = parts[2] + ':' + parts[1]; 
+            const cronSelectedDays = parts[5].split(',');
+          
+            setTime(cronTime);
+            setSelectedDays(cronSelectedDays);
+          }     
+      } else {
         setTime('12:00');
         setSelectedDays(['MON']);
         updateCronExpression('0 00 12 * * MON')
+        }
+    } 
   }, []);
 
   

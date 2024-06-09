@@ -1,5 +1,6 @@
 import React, { useState,useContext,useEffect  } from 'react';
 import CronContext from '../../context/CronExpressionContext';
+import { CronParser } from '../../utilities/CronParser';
 
 function Days() {
   const [time, setTime] = useState('12:00');
@@ -15,8 +16,19 @@ function Days() {
   }, [cronExpression]);
 
   useEffect(() => {
-      setTime(`12:00`);
-      updateCronExpression('0 00 12 * * *')
+    if (cronExpression) {
+      if (CronParser.regexArray[1].test(cronExpression)) {
+        const parts = cronExpression.split(' ');
+        const hour = parts[2];
+        const minute = parts[1];
+        if (hour) {
+          setTime(`${hour.padStart(2, '0')}:${minute.padStart(2, '0')}`);
+        }
+      } else {
+        setTime(`12:00`);
+        updateCronExpression('0 00 12 * * *')
+      }
+    }
     
   }, []);
 

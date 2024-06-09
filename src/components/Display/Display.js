@@ -93,7 +93,7 @@ function Display() {
         <button className='two_buttons' onClick={handleDownload}>Загрузить</button>
         
       </div>
-      <p id='check_link'>Вы можете свободно редактировать CRON строку.</p>
+      <p id='check_link'>Вы можете свободно редактировать CRON строку</p>
       <div className='expression'>
         <p 
         id='expression_field' 
@@ -106,7 +106,7 @@ function Display() {
         <p >{humanReadableExpression}</p>
       </div> 
 
-      <button className='two_buttons' id='copy_button' onClick={handleCopyButtonClick}> Копировать строку</button>
+      <button className='two_buttons' id='copy_button' onClick={handleCopyButtonClick} style={{marginBottom:'20px'}}> Копировать строку</button>
       <ToastContainer/>
     </div>
   );

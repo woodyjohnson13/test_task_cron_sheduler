@@ -1,13 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState,useContext,useEffect } from 'react';
+import CronContext from '../../context/CronExpressionContext';
 import './minutes.css'
 
-function Minutes({ updateCron }) {
+function Minutes() {
   const [minutes, setMinutes] = useState(15);
+  const {cronExpression,updateCronExpression} = useContext(CronContext);
+
+  useEffect(() => {
+    const parts = cronExpression.split(' ');
+    if (parts.length > 1) {
+      const minute = parseInt(parts[0].split('/')[1]);
+      setMinutes(minute);
+    }
+  }, [cronExpression]);
+
 
   const handleMinutesChange = (e) => {
     const value = e.target.value;
     setMinutes(value);
-    updateCron(`*/${value} * * * *`);
+    updateCronExpression(`*/${value} * * * *`);
   };
 
 

@@ -1,12 +1,15 @@
-import React from 'react';
-import './display.css'
+import React ,{useContext,useState,useEffect } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import { CronParser } from '../../utilities/CronParser'; 
+import CronContext from '../../context/CronExpressionContext';
+import 'react-toastify/dist/ReactToastify.css';
+import './display.css'
 
 
 
-function Display({ cronExpression }) {
+function Display() {
+  const {cronExpression,updateCronExpression} = useContext(CronContext);
+  const [humanReadableExpression, setHumanReadableExpression] = useState('');
 
   const handleSaveButtonClick = () => {
     if (CronParser.isValidCronExpression(cronExpression)) {
@@ -63,24 +66,47 @@ function Display({ cronExpression }) {
         });    
 
   }
+
+  const handleExpressionEdit = (e) => {
+    const selection = window.getSelection();
+    const cursorOffset = selection.focusOffset; // Store cursor position
   
+    const newCronExpression = e.target.textContent;
+    updateCronExpression(newCronExpression);
+  
+    setTimeout(() => {
+      selection.collapse(e.target.firstChild, cursorOffset); // Set cursor position
+    }, 0);
+  };
+
+  useEffect(() => {
+    setHumanReadableExpression(CronParser.cronExpressionToHumanReadable(cronExpression));
+  }, [cronExpression]);
+
+
+  
+
   return (
     <div className='main_display'>
       <div className='button_box'>
         <button className='two_buttons' onClick={handleSaveButtonClick}>Сохранить</button>
         <button className='two_buttons' onClick={handleDownload}>Загрузить</button>
+        
+      </div>
+      <p id='check_link'>Вы можете свободно редактировать CRON строку.</p>
+      <div className='expression'>
+        <p 
+        id='expression_field' 
+        contentEditable="true"
+        onInput={handleExpressionEdit}
+        >{cronExpression}</p>
       </div>
 
       <div className='expression'>
-        <p id='expression_field' contentEditable="true">{cronExpression}</p>
-      </div>
-
-      <div className='expression'>
-        <p>{CronParser.cronExpressionToHumanReadable(cronExpression)}</p>
+        <p >{humanReadableExpression}</p>
       </div> 
 
       <button className='two_buttons' id='copy_button' onClick={handleCopyButtonClick}> Копировать строку</button>
-      <p id='check_link'>Проверить полученную строку можно по <a href="https://crontab.cronhub.io/">ссылке</a>.</p>
       <ToastContainer/>
     </div>
   );

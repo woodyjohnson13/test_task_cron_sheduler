@@ -1,14 +1,16 @@
 export class CronParser {
 
+    static regexArray = [
+      /^(\d{1,2}|\*) (\d{1,2}|\*) (\d{1,2}|\*) (\*|\d{1,2}|\d{1,2}-\d{1,2}) (\*|\d{1,2}|\d{1,2}-\d{1,2}) (MON|TUE|WED|THU|FRI|SAT|SUN)(,(MON|TUE|WED|THU|FRI|SAT|SUN))*$/, //Weeks
+      /^\d{1,2} \d{1,2} \d{1,2} \* \* \*$/, //Dayily
+      /^\*\/\d{1,2} \* \* \* \*$/,//Minutes
+      /^0 \d{1,2} \d{1,2} \d{1,2} \* \*$/ //Days of the month
+    ];
+
+
     static isValidCronExpression(cronExpression) {
-      const regexArray = [
-        /^(\d{1,2}|\*) (\d{1,2}|\*) (\d{1,2}|\*) (\*|\d{1,2}|\d{1,2}-\d{1,2}) (\*|\d{1,2}|\d{1,2}-\d{1,2}) (MON|TUE|WED|THU|FRI|SAT|SUN)(,(MON|TUE|WED|THU|FRI|SAT|SUN))*$/,
-        /^\d{1,2} \d{1,2} \d{1,2} \* \* \*$/,
-        /^\*\/\d{1,2} \* \* \* \*$/,
-        /^(\d{1,2}|\*) (\d{1,2}|\*) \d{1,2} \d{1,2} \* \*$/
-      ];
   
-      for (let regex of regexArray) {
+      for (let regex of CronParser.regexArray) {
         if (regex.test(cronExpression)) {
           return true; 
         }
@@ -67,21 +69,22 @@ export class CronParser {
     }
     
     static cronExpressionToHumanReadable(cronExpression) {
-        if (!CronParser.isValidCronExpression(cronExpression)) {
-          return 'Invalid cron expression';
-        }
-    
-        if (/^\*\/\d{1,2} \* \* \* \*$/.test(cronExpression)) {
-          return CronParser.parseEveryXMinutes(cronExpression);
-        } else if (/^(\d{1,2}|\*) (\d{1,2}|\*) (\d{1,2}|\*) (\*|\d{1,2}|\d{1,2}-\d{1,2}) (\*|\d{1,2}|\d{1,2}-\d{1,2}) (MON|TUE|WED|THU|FRI|SAT|SUN)(,(MON|TUE|WED|THU|FRI|SAT|SUN))*$/.test(cronExpression)) {
+      if (!CronParser.isValidCronExpression(cronExpression)) {
+          return 'Невалидное CRON выражение';
+      }
+  
+      if (CronParser.regexArray[0].test(cronExpression)) {
           return CronParser.parseDaysOfWeek(cronExpression);
-        } else if (/^\*\/\d{1,2} \* \* \* \*$/.test(cronExpression)) {
+      } else if (CronParser.regexArray[2].test(cronExpression)) {
           return CronParser.parseEveryXMinutes(cronExpression);
-        } else if (/^0 \d{1,2} \d{1,2} \d{1,2} \* \*$/.test(cronExpression)) {
+      } else if (CronParser.regexArray[3].test(cronExpression)) {
           return CronParser.parseSpecificDayOfMonth(cronExpression);
-        } else {
-          return 'Unrecognized cron expression';
-        }
-    }
+      } else if (CronParser.regexArray[1].test(cronExpression)) {
+          return CronParser.parseDaily(cronExpression);
+      } else {
+          return 'Невалидное CRON выражение';
+      }
+  }
+  
 }
   

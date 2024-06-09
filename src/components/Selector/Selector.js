@@ -1,9 +1,34 @@
-import React from 'react';
+import React,{useContext,useEffect} from 'react';
+import CronContext from '../../context/CronExpressionContext';
+import { CronParser } from '../../utilities/CronParser'; 
 import './selector.css';
+
+
 function Selector({ scheduleType, setScheduleType }) {
+
+  const {cronExpression} = useContext(CronContext);
+
+  useEffect(() => {
+    const updateScheduleType = () => {
+      if (CronParser.isValidCronExpression(cronExpression)) {
+        if (/^(\d{1,2}|\*) (\d{1,2}|\*) (\d{1,2}|\*) (\*|\d{1,2}|\d{1,2}-\d{1,2}) (\*|\d{1,2}|\d{1,2}-\d{1,2}) (MON|TUE|WED|THU|FRI|SAT|SUN)(,(MON|TUE|WED|THU|FRI|SAT|SUN))*$/.test(cronExpression)) {
+          setScheduleType('weekly');
+        } else if (/^\d{1,2} \d{1,2} \d{1,2} \* \* \*$/.test(cronExpression)) {
+          setScheduleType('daily');
+        } else if (/^\*\/\d{1,2} \* \* \* \*$/.test(cronExpression)) {
+          setScheduleType('minutes');
+        } else if (/^0 \d{1,2} \d{1,2} \d{1,2} \* \*$/.test(cronExpression)) {
+          setScheduleType('monthly');
+        } }
+    };
+
+    updateScheduleType();
+  }, [cronExpression]);
+
   return (
     <div className='selector'>
       <h3 className='selector_title'>График</h3>
+      
       <label>
         <input 
           type="radio" 
@@ -42,15 +67,6 @@ function Selector({ scheduleType, setScheduleType }) {
           onChange={() => setScheduleType('monthly')} 
         />
         <span>Месяцы</span>
-      </label>
-      <label>
-        <input 
-          type="radio" 
-          value="custom" 
-          checked={scheduleType === 'custom'} 
-          onChange={() => setScheduleType('custom')} 
-        />
-        <span>Свой график</span>
       </label>
     </div>
   );

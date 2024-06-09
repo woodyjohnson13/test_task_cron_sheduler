@@ -1,26 +1,42 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useContext } from 'react';
+import CronContext from '../../context/CronExpressionContext';
 import './weeks.css';
 
-function Weeks({ updateCron }) {
+function Weeks() {
   const [selectedDays, setSelectedDays] = useState(['MON']);
   const [time, setTime] = useState('12:00');
+  const {cronExpression,updateCronExpression} = useContext(CronContext);
 
   useEffect(() => {
-    updateCron(`0 ${time.split(':')[1]} ${time.split(':')[0]} * * ${selectedDays.join(',')}`);
-  }, [selectedDays, time, updateCron]);
-
+    if (cronExpression) {
+      const parts = cronExpression.split(' ');
+      if (parts.length >= 6) {
+        const cronTime = parts[2] + ':' + parts[1]; 
+        const cronSelectedDays = parts[5].split(',');
+      
+        setTime(cronTime);
+        setSelectedDays(cronSelectedDays);
+      }
+    }
+  }, [cronExpression,updateCronExpression]);
+  
+  
   const handleDayChange = (e) => {
     const value = e.target.value;
+    let newSelectedDays;
     if (selectedDays.includes(value)) {
-      setSelectedDays(selectedDays.filter(day => day !== value));
+      newSelectedDays = selectedDays.filter(day => day !== value);
     } else {
-      setSelectedDays([...selectedDays, value]);
+      newSelectedDays = [...selectedDays, value];
     }
+    setSelectedDays(newSelectedDays);
+    updateCronExpression(`0 ${time.split(':')[1]} ${time.split(':')[0]} * * ${newSelectedDays.join(',')}`);
   };
 
   const handleTimeChange = (e) => {
     const value = e.target.value;
     setTime(value);
+    updateCronExpression(`0 ${value.split(':')[1]} ${value.split(':')[0]} * * ${selectedDays.join(',')}`);
   };
 
   return (
@@ -57,13 +73,13 @@ function Weeks({ updateCron }) {
             Воскресенье
           </label>
         </div>
-        <input
-          className='clock'
-          type="time"
-          value={time}
-          onChange={handleTimeChange}
-          style={{ marginTop: '1px' }}
-        />
+          <input
+            className='clock'
+            type="time"
+            value={time}
+            onChange={handleTimeChange}
+            style={{ marginTop: '1px' }}
+          />
       </div>
     </div>
   );
